@@ -45,16 +45,25 @@ ORDER BY `teachers`.`surname` ASC;
 -- 6.Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
 SELECT DISTINCT `teachers`.`surname` as `Cognome Insegnante`, `teachers`.`name` as `Nome Insegnante`, `departments`.`name` as `DIpartimento`
 FROM `teachers`
-JOIN `course_teacher`
+INNER JOIN `course_teacher`
 ON `course_teacher`.`teacher_id` = `teachers`.`id`
-JOIN `courses`
+INNER JOIN `courses`
 ON `courses`.`id` = `course_teacher`.`course_id`
-JOIN `degrees`
+INNER JOIN `degrees`
 ON `courses`.`degree_id` = `degrees`.`id`
-JOIN `departments`
+INNER JOIN `departments`
 ON `degrees`.`department_id` = `departments`.`id`
 WHERE `departments`.`name` = "Dipartimento di Matematica"
 ORDER BY `teachers`.`surname` ASC;
 
 -- 7.BONUS: Selezionare per ogni studente quanti tentativi d’esame ha sostenuto per superare ciascuno dei suoi esami
-
+SELECT `students`.`surname` as `Cognome`, `students`.`name` as `Nome`, `courses`.`name` as `Esame`,  COUNT(`courses`.`id`) AS `Tentativi Esame`
+FROM `students`
+INNER JOIN `exam_student`
+ON `exam_student`.`student_id`= `students`.`id`
+INNER JOIN `exams`
+ON `exam_student`.`exam_id`= `exams`.`id`
+INNER JOIN `courses`
+ON `exams`.`course_id`=`courses`.`id`
+GROUP BY `students`.`surname`, `students`.`name`, `courses`.`name`
+ORDER BY `students`.`surname`;
