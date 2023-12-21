@@ -1,5 +1,5 @@
 -- 1.Selezionare tutti gli studenti iscritti al Corso di Laurea in Economia
-SELECT `degrees`.`name`as `Corso di Laurea`, `students`.`name` as `Nome`, `students`.`surname` as `Cognome`
+SELECT `degrees`.`name` as `Corso di Laurea`, `students`.`name` as `Nome`, `students`.`surname` as `Cognome`
 FROM `students`
 INNER JOIN `degrees`
 ON `students`.`degree_id` = `degrees`.`id`
@@ -10,7 +10,8 @@ SELECT `departments`.`name`as `Dipartimento`, `degrees`.`name`as `Corso di Laure
 FROM `degrees`
 INNER JOIN `departments`
 ON `degrees`.`department_id` = `departments`.`id`
-WHERE `departments`.`name`= 'Dipartimento di Neuroscienze' AND `degrees`.`level` = "magistrale";
+WHERE `departments`.`name`= 'Dipartimento di Neuroscienze' 
+AND `degrees`.`level` = "magistrale";
 
 -- 3.Selezionare tutti i corsi in cui insegna Fulvio Amato (id=44)
 SELECT `teachers`.`name` as `Nome`, `teachers`.`surname` as `Cognome`, `courses`.`name` as `Corso`
@@ -31,7 +32,7 @@ ON `degrees`.`department_id` = `departments`.`id`
 ORDER BY `students`.`surname` ASC, `students`.`name` ASC;
 
 -- 5.Selezionare tutti i corsi di laurea con i relativi corsi e insegnanti
-SELECT `degrees`.name as `Corso di Laurea`, `teachers`.`surname` as `Cognome Insegnante`, `teachers`.`name` as `Nome Insegnante`
+SELECT `degrees`.`name` as `Corso di Laurea`, `teachers`.`surname` as `Cognome Insegnante`, `teachers`.`name` as `Nome Insegnante`
 FROM `courses`
 INNER JOIN `degrees`
 ON `courses`.`degree_id` = `degrees`.`id`
@@ -41,9 +42,19 @@ INNER JOIN `teachers`
 ON `course_teacher`.`teacher_id` = `teachers`.`id`
 ORDER BY `teachers`.`surname` ASC;
 
-
 -- 6.Selezionare tutti i docenti che insegnano nel Dipartimento di Matematica (54)
-
+SELECT DISTINCT `teachers`.`surname` as `Cognome Insegnante`, `teachers`.`name` as `Nome Insegnante`, `departments`.`name` as `DIpartimento`
+FROM `teachers`
+JOIN `course_teacher`
+ON `course_teacher`.`teacher_id` = `teachers`.`id`
+JOIN `courses`
+ON `courses`.`id` = `course_teacher`.`course_id`
+JOIN `degrees`
+ON `courses`.`degree_id` = `degrees`.`id`
+JOIN `departments`
+ON `degrees`.`department_id` = `departments`.`id`
+WHERE `departments`.`name` = "Dipartimento di Matematica"
+ORDER BY `teachers`.`surname` ASC;
 
 -- 7.BONUS: Selezionare per ogni studente quanti tentativi d’esame ha sostenuto per superare ciascuno dei suoi esami
 
