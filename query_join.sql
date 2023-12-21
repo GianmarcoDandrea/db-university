@@ -60,10 +60,11 @@ ORDER BY `teachers`.`surname` ASC;
 SELECT `students`.`surname` as `Cognome`, `students`.`name` as `Nome`, `courses`.`name` as `Esame`,  COUNT(`courses`.`id`) AS `Tentativi Esame`
 FROM `students`
 INNER JOIN `exam_student`
-ON `exam_student`.`student_id`= `students`.`id`
+ON `exam_student`.`student_id` = `students`.`id`
 INNER JOIN `exams`
-ON `exam_student`.`exam_id`= `exams`.`id`
+ON `exam_student`.`exam_id` = `exams`.`id`
 INNER JOIN `courses`
-ON `exams`.`course_id`=`courses`.`id`
+ON `exams`.`course_id` = `courses`.`id`
+WHERE `exam_student`.`VOTE` < 18
 GROUP BY `students`.`surname`, `students`.`name`, `courses`.`name`
 ORDER BY `students`.`surname`;
